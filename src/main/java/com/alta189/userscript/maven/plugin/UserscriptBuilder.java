@@ -40,6 +40,7 @@ public class UserscriptBuilder {
         appendValid(builder, "// @namespace     ", userscript.getMetadata().getNamespace());
         appendValid(builder, "// @description   ", userscript.getMetadata().getDescription());
         appendValid(builder, "// @version       ", userscript.getMetadata().getVersion());
+        appendValid(builder, "// @author        ", userscript.getMetadata().getAuthor());
         appendValid(builder, "// @include       ", userscript.getMetadata().getIncludes());
         appendValid(builder, "// @exclude       ", userscript.getMetadata().getExcludes());
         appendValid(builder, "// @match         ", userscript.getMetadata().getMatches());

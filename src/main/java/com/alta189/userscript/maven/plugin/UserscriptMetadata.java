@@ -37,4 +37,6 @@ public class UserscriptMetadata {
     private String updateURL;
     @Getter
     private String version;
+    @Getter
+    private String author;
 }
