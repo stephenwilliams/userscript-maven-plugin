@@ -40,9 +40,12 @@ import org.apache.commons.lang3.text.StrBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 public class UserscriptBuilder {
+    private final Pattern infludePattern = Pattern.compile("/\\* include:(?<file>.+)\\*/", Pattern.CASE_INSENSITIVE);
     @Getter
     private final UserscriptMojo mojo;
     @Getter
@@ -94,7 +97,7 @@ public class UserscriptBuilder {
             throw new UserscriptBuilderException("Could not read sourceFile: " + sourceFile.getPath(), e);
         }
 
-        builder.append(source);
+        builder.append(filterSource(source));
 
         return builder.build();
     }
@@ -148,5 +151,34 @@ public class UserscriptBuilder {
         if (condition) {
             builder.appendln(input);
         }
+    }
+
+    private String filterSource(String source) throws UserscriptBuilderException {
+        String result = source;
+        Matcher matcher = infludePattern.matcher(source);
+
+        while (matcher.find()) {
+            String replace = matcher.group();
+            String file = matcher.group("file");
+            if (!valid(file)) {
+                throw new UserscriptBuilderException("include tag is invalid");
+            }
+
+            File srcFile = new File(getMojo().getSourceDirectory(), file.trim());
+            if (!srcFile.exists() || !srcFile.isFile()) {
+                throw new UserscriptBuilderException("File does not exist or is not a file: " + srcFile.getPath());
+            }
+
+            String contents;
+            try {
+                contents = FileUtils.readFileToString(srcFile);
+            } catch (IOException e) {
+                throw new UserscriptBuilderException("Exception reading file for input tag: " + srcFile.getPath(), e);
+            }
+
+            result = result.replaceFirst(Pattern.quote(replace), contents);
+        }
+
+        return result;
     }
 }
