@@ -23,7 +23,8 @@ Minimal pom.xml
                         <source>hello-world.user.js</source>
                         <metadata>
                             <name>${project.name}</name>
-                            <version>${project.version}</version>                        						 </metadata>
+                            <version>${project.version}</version>
+                        </metadata>
                     </userscript>
                 </userscripts>
             </configuration>
