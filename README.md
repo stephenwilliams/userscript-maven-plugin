@@ -1,5 +1,5 @@
 # userscript-maven-plugin
--------------------------
+
 This plugin for maven allows you to "compile" a userscript. It generates the Userscript metadata block and also alows you to include other files to combine them into one.
 
 ## Usage
