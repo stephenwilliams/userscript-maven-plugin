@@ -7,7 +7,7 @@
     <name>userscript-maven-plugin</name>
     <url>https://github.com/alta189/userscript-maven-plugin</url>
 
-    <groupId>com.alta189</groupId>
+    <groupId>com.alta189.maven</groupId>
     <artifactId>userscript-maven-plugin</artifactId>
     <version>1.0-SNAPSHOT</version>
 
