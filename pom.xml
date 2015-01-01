@@ -6,12 +6,19 @@
 
     <name>userscript-maven-plugin</name>
     <url>https://github.com/alta189/userscript-maven-plugin</url>
+    <description>Maven plugin that generates the Userscript metadata header</description>
+    <inceptionYear>2014</inceptionYear>
 
     <groupId>com.alta189.maven</groupId>
     <artifactId>userscript-maven-plugin</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <packaging>maven-plugin</packaging>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>9</version>
+    </parent>
 
     <developers>
         <developer>
@@ -20,6 +27,10 @@
             <email>me@alta189.com</email>
         </developer>
     </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -57,5 +68,113 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>alta-nexus</id>
+            <name>Alta Nexus Releases</name>
+            <url>http://nexus.alta189.com/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>alta-nexus</id>
+            <name>Alta Nexus Snapshots</name>
+            <url>http://nexus.alta189.com//content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <issueManagement>
+        <system>Github Issues</system>
+        <url>https://github.com/alta189/userscript-maven-plugin/issues</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:git://github.com/alta189/userscript-maven-plugin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:alta189/userscript-maven-plugin.git</developerConnection>
+        <url>https://github.com/alta189/userscript-maven-plugin</url>
+    </scm>
+
+    <!-- License information -->
+    <licenses>
+        <license>
+            <name>New BSDLicense</name>
+            <url>https://tldrlegal.com/l/mit</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <!-- Build configuration -->
+    <build>
+        <defaultGoal>clean install</defaultGoal>
+
+        <!-- Resources to include -->
+        <resources>
+            <!-- Static resources -->
+            <resource>
+                <filtering>false</filtering>
+                <directory>.</directory>
+                <targetPath>.</targetPath>
+                <includes>
+                    <include>LICENSE.txt</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <!-- Build plugins -->
+        <plugins>
+            <!-- License header plugin -->
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.10.b1</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <properties>
+                                <project>${project.name}</project>
+                                <year>${project.inceptionYear}</year>
+                                <name>Stephen Williams (alta189)</name>
+                                <url>${project.url}</url>
+                            </properties>
+                            <quiet>true</quiet>
+                            <encoding>UTF-8</encoding>
+                            <strictCheck>true</strictCheck>
+                            <header>HEADER.txt</header>
+                            <mapping>
+                                <java>SLASHSTAR_STYLE</java>
+                            </mapping>
+                            <keywords>
+                                <keyword>${project.name}</keyword>
+                                <keyword>license</keyword>
+                            </keywords>
+                            <includes>
+                                <include>src/main/java/**</include>
+                                <include>src/test/java/**</include>
+                            </includes>
+                        </configuration>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Source compiler plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerArguments>
+                        <O>-Xlint:all</O>
+                        <O>-Xlint:-path</O>
+                    </compilerArguments>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
